@@ -16,7 +16,6 @@ body {
   background: #f5f5f5;
 }
 
-/* LINKS RESET */
 a {
   text-decoration: none;
   color: inherit;
@@ -65,7 +64,7 @@ a {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   padding: 12px;
-  margin-top: -60px;
+  margin-top: 0;
 }
 
 .mobile-layout .button {
@@ -88,19 +87,33 @@ a {
   grid-column: span 2;
 }
 
-/* TOOLTIP */
-.tooltip {
-  position: absolute;
-  background: rgba(0,0,0,0.9);
-  color: white;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 14px;
+/* MODAL */
+#infoModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
   display: none;
-  z-index: 1000;
-  max-width: 260px;
+  z-index: 9999;
+}
+
+#infoModal {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  color: black;
+  padding: 20px 25px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 85%;
   text-align: center;
-  line-height: 1.3;
+  font-size: 15px;
+  line-height: 1.4;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 /* SWITCH */
@@ -113,36 +126,61 @@ a {
 
 <body>
 
+<!-- AUDIO -->
+<audio id="partySound" src="party.mp3" preload="auto"></audio>
+
 <!-- DESKTOP -->
 <div class="desktop-layout">
 
 <img src="poster.png" alt="Abitreffen Einladung">
 
-<a href="https://www.google.com/maps/search/?api=1&query=Humboldt+Kaffeemanufaktur+Seelingstraße+32+Berlin" target="_blank" class="button" style="top:70%; left:30%;">
+<a href="https://www.google.com/maps/search/?api=1&query=Humboldt+Kaffeemanufaktur+Seelingstraße+32+Berlin"
+   target="_blank"
+   class="button"
+   style="top:60%; left:45%;"
+   onclick="triggerFirstInteraction()">
 📍 Ort
 </a>
 
-<div class="button" style="top:80%; left:30%;" onclick="toggleTooltip(event)">
+<div class="button"
+     style="top:70%; left:45%;"
+     onclick="openInfoModal(); triggerFirstInteraction();">
 🕒 Info
 </div>
 
-<a href="https://cdn.shopify.com/s/files/1/0845/5726/7270/files/Karte_ab_April_25.pdf?v=1745924336" target="_blank" class="button" style="top:90%; left:30%;">
+<a href="https://cdn.shopify.com/s/files/1/0845/5726/7270/files/Karte_ab_April_25.pdf?v=1745924336#page=3"
+   target="_blank"
+   class="button"
+   style="top:80%; left:45%;"
+   onclick="triggerFirstInteraction()">
 🍸 Getränkekarte
 </a>
 
-<a href="https://DEINE-NEXTCLOUD-URL" target="_blank" class="button" style="top:70%; left:65%;">
+<a href="https://DEINE-NEXTCLOUD-URL"
+   target="_blank"
+   class="button"
+   style="top:99%; left:10%;"
+   onclick="playPartySound(); triggerFirstInteraction()">
 ✅ Teilnahme zusagen
 </a>
 
-<a href="https://DEINE-NEXTCLOUD-URL" target="_blank" class="button" style="top:80%; left:65%;">
+<a href="https://DEINE-NEXTCLOUD-URL"
+   target="_blank"
+   class="button"
+   style="top:99%; left:40%;"
+   onclick="triggerFirstInteraction()">
 👥 Teilnehmer ansehen
 </a>
 
 </div>
 
-<!-- TOOLTIP -->
-<div id="tooltip" class="tooltip">
-Wer sich schon früher treffen möchte, kann dies gerne eigenorganisiert in der Location tun. Während des regulären Betriebs können wir für euch Tische reservieren. Bitte meldet euch mit der gewünschten Personenanzahl.
+<!-- INFO MODAL -->
+<div id="infoModalOverlay" onclick="closeInfoModal()">
+  <div id="infoModal">
+    Wer sich schon früher treffen möchte, kann dies gerne eigenorganisiert in der Location tun.  
+    Während des regulären Betriebs können wir für euch Tische reservieren.  
+    Bitte meldet euch mit der gewünschten Personenanzahl.
+  </div>
 </div>
 
 <!-- MOBILE -->
@@ -152,23 +190,36 @@ Wer sich schon früher treffen möchte, kann dies gerne eigenorganisiert in der 
 
 <div class="button-grid">
 
-<a href="https://www.google.com/maps/search/?api=1&query=Humboldt+Kaffeemanufaktur+Seelingstraße+32+Berlin" target="_blank" class="button">
+<a href="https://www.google.com/maps/search/?api=1&query=Humboldt+Kaffeemanufaktur+Seelingstraße+32+Berlin"
+   target="_blank"
+   class="button"
+   onclick="triggerFirstInteraction()">
 📍 Ort
 </a>
 
-<div class="button" onclick="toggleTooltip(event)">
+<div class="button"
+     onclick="openInfoModal(); triggerFirstInteraction();">
 🕒 Info
 </div>
 
-<a href="https://cdn.shopify.com/s/files/1/0845/5726/7270/files/Karte_ab_April_25.pdf?v=1745924336" target="_blank" class="button">
+<a href="https://cdn.shopify.com/s/files/1/0845/5726/7270/files/Karte_ab_April_25.pdf?v=1745924336#page=3"
+   target="_blank"
+   class="button"
+   onclick="triggerFirstInteraction()">
 🍸 Getränkekarte
 </a>
 
-<a href="https://DEINE-NEXTCLOUD-URL" target="_blank" class="button primary">
+<a href="https://DEINE-NEXTCLOUD-URL"
+   target="_blank"
+   class="button primary"
+   onclick="playPartySound(); triggerFirstInteraction()">
 ✅ Teilnahme zusagen
 </a>
 
-<a href="https://DEINE-NEXTCLOUD-URL" target="_blank" class="button full">
+<a href="https://DEINE-NEXTCLOUD-URL"
+   target="_blank"
+   class="button full"
+   onclick="triggerFirstInteraction()">
 👥 Teilnehmer ansehen
 </a>
 
@@ -177,20 +228,34 @@ Wer sich schon früher treffen möchte, kann dies gerne eigenorganisiert in der 
 </div>
 
 <script>
-function toggleTooltip(e) {
-  const tooltip = document.getElementById("tooltip");
+let infoTimer;
+let soundPlayedOnce = false;
 
-  if (tooltip.style.display === "block") {
-    tooltip.style.display = "none";
-    return;
+function playPartySound() {
+  const sound = document.getElementById("partySound");
+  if (sound) {
+    sound.currentTime = 0;
+    sound.play().catch(e => console.log("Audio blocked:", e));
   }
+}
 
-  const rect = e.target.getBoundingClientRect();
+function triggerFirstInteraction() {
+  if (!soundPlayedOnce) {
+    playPartySound();
+    soundPlayedOnce = true;
+  }
+}
 
-  tooltip.style.display = "block";
-  tooltip.style.left = rect.left + rect.width / 2 + "px";
-  tooltip.style.top = rect.top - 10 + "px";
-  tooltip.style.transform = "translate(-50%, -100%)";
+function openInfoModal() {
+  const modal = document.getElementById("infoModalOverlay");
+  modal.style.display = "block";
+
+  clearTimeout(infoTimer);
+  infoTimer = setTimeout(closeInfoModal, 10000);
+}
+
+function closeInfoModal() {
+  document.getElementById("infoModalOverlay").style.display = "none";
 }
 </script>
 
